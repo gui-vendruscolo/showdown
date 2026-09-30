@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://dty5fii1y17f3"]
+
+[ext_resource type="Script" uid="uid://cop7xpq2dmi80" path="res://scripts/damageable_target.gd" id="1_4tjb1"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_cktxm"]
+top_radius = 1.0
+bottom_radius = 1.0
+height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4tjb1"]
+albedo_color = Color(0.8860766, 0, 0.17661461, 1)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cktxm"]
+height = 0.1
+radius = 1.0
+
+[node name="DamageableTarget" type="StaticBody3D" unique_id=1562441630]
+script = ExtResource("1_4tjb1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=699281912]
+transform = Transform3D(1, 0, 0, 0, -5.9604645e-08, -1, 0, 1, -5.9604645e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_cktxm")
+surface_material_override/0 = SubResource("StandardMaterial3D_4tjb1")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1211930749]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0)
+shape = SubResource("CylinderShape3D_cktxm")

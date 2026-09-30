@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://bjfpa3rsp2f4h"]
+
+[ext_resource type="PackedScene" uid="uid://dolqa4uebea5k" path="res://scenes/player.tscn" id="1_e05a3"]
+[ext_resource type="PackedScene" uid="uid://dty5fii1y17f3" path="res://scenes/damageable_target.tscn" id="1_wl4x5"]
+[ext_resource type="PackedScene" uid="uid://bx6kakrq6rtdg" path="res://scenes/crosshair.tscn" id="3_olpmc"]
+[ext_resource type="PackedScene" uid="uid://b0j1qd2t5oywg" path="res://scenes/combat_hud.tscn" id="4_xdvfk"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e05a3"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_wl4x5"]
+sky_material = SubResource("ProceduralSkyMaterial_e05a3")
+
+[sub_resource type="Environment" id="Environment_olpmc"]
+background_mode = 2
+sky = SubResource("Sky_wl4x5")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Arena" type="Node3D" unique_id=1653178900]
+
+[node name="Sun" type="DirectionalLight3D" parent="." unique_id=1747541337]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=115590092]
+environment = SubResource("Environment_olpmc")
+
+[node name="Ground" type="CSGBox3D" parent="." unique_id=314973223]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+use_collision = true
+size = Vector3(30, 1, 60)
+
+[node name="DamageableTarget" parent="Ground" unique_id=1562441630 instance=ExtResource("1_wl4x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9390728, 10.121044)
+
+[node name="Player" parent="." unique_id=1964862749 instance=ExtResource("1_e05a3")]
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=605246103]
+
+[node name="CombatHUD" parent="UI" unique_id=842100935 instance=ExtResource("4_xdvfk")]
+
+[node name="Crosshair" parent="UI" unique_id=714669039 instance=ExtResource("3_olpmc")]

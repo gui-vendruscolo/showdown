@@ -1,0 +1,48 @@
+[gd_scene format=3 uid="uid://b0j1qd2t5oywg"]
+
+[ext_resource type="Script" uid="uid://oer4wtm138u" path="res://scripts/combat_hud.gd" id="1_ibcap"]
+
+[node name="CombatHUD" type="Control" unique_id=842100935]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ibcap")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1198241773]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 37.0
+offset_top = -50.0
+offset_right = 404.0
+offset_bottom = -23.0
+grow_vertical = 0
+
+[node name="HealthLabel" type="Label" parent="." unique_id=2097693701]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 39.0
+offset_top = -76.0
+offset_right = 79.0
+offset_bottom = -53.0
+grow_vertical = 0
+
+[node name="AmmoLabel" type="Label" parent="." unique_id=1332634470]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -105.0
+offset_top = -63.0
+offset_right = -27.0
+offset_bottom = -19.0
+grow_horizontal = 0
+grow_vertical = 0
