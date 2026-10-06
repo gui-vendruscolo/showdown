@@ -1,0 +1,74 @@
+[gd_scene format=3 uid="uid://x12o2ovxws7u"]
+
+[ext_resource type="Script" path="res://scripts/options_menu_controller.gd" id="1_options_controller"]
+
+[node name="OptionsMenu" type="VBoxContainer" unique_id=1308471433]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 14
+script = ExtResource("1_options_controller")
+
+[node name="Title" type="Label" parent="." unique_id=1739540189]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Options"
+horizontal_alignment = 1
+
+[node name="ResolutionRow" type="HBoxContainer" parent="." unique_id=2017985053]
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="ResolutionRow" unique_id=188918659]
+layout_mode = 2
+text = "Resolution        "
+
+[node name="ResolutionOption" type="OptionButton" parent="ResolutionRow" unique_id=1217519215]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="WindowModeRow" type="HBoxContainer" parent="." unique_id=164017455]
+layout_mode = 2
+
+[node name="WindowLabel" type="Label" parent="WindowModeRow" unique_id=1806317310]
+layout_mode = 2
+text = "Window             "
+
+[node name="WindowOption" type="OptionButton" parent="WindowModeRow" unique_id=1780068948]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SensitivityRow" type="HBoxContainer" parent="." unique_id=839627268]
+layout_mode = 2
+
+[node name="WindowLabel" type="Label" parent="SensitivityRow" unique_id=1923713826]
+layout_mode = 2
+text = "Sensitivity         "
+
+[node name="SensitivitySlider" type="HSlider" parent="SensitivityRow" unique_id=189058893]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SensitivityValue" type="LineEdit" parent="SensitivityRow" unique_id=1958360032]
+layout_mode = 2
+text = "1.0"
+alignment = 2
+
+[node name="BackButton" type="Button" parent="." unique_id=758281471]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Back"

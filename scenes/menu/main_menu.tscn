@@ -1,0 +1,72 @@
+[gd_scene format=3 uid="uid://43fmlgcqu56w"]
+
+[ext_resource type="PackedScene" uid="uid://dq05fx5xv62ub" path="res://scenes/menu/join_menu.tscn" id="1_nl8w3"]
+[ext_resource type="PackedScene" uid="uid://x12o2ovxws7u" path="res://scenes/menu/options_menu.tscn" id="2_3rkf3"]
+[ext_resource type="Script" uid="uid://cmjefnkagihb6" path="res://scripts/main_menu_controller.gd" id="3_main_menu_controller"]
+
+[node name="MainMenu" type="Control" unique_id=417674643]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_main_menu_controller")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=342854003]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panels" type="Control" parent="CenterContainer" unique_id=181532174]
+layout_mode = 2
+
+[node name="MainPanel" type="VBoxContainer" parent="CenterContainer/Panels" unique_id=1826028921]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 16
+
+[node name="Title" type="Label" parent="CenterContainer/Panels/MainPanel" unique_id=940778320]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Boa tarde"
+horizontal_alignment = 1
+
+[node name="CreateGameButton" type="Button" parent="CenterContainer/Panels/MainPanel" unique_id=774213735]
+layout_mode = 2
+text = "Create game
+"
+
+[node name="JoinGameButton" type="Button" parent="CenterContainer/Panels/MainPanel" unique_id=1688484121]
+layout_mode = 2
+text = "Join game"
+
+[node name="OptionsButton" type="Button" parent="CenterContainer/Panels/MainPanel" unique_id=400242697]
+layout_mode = 2
+text = "Options
+"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/Panels/MainPanel" unique_id=674974841]
+layout_mode = 2
+text = "Quit"
+
+[node name="JoinMenu" parent="CenterContainer/Panels" unique_id=896307142 instance=ExtResource("1_nl8w3")]
+visible = false
+layout_mode = 1
+
+[node name="OptionsMenu" parent="CenterContainer/Panels" unique_id=1308471433 instance=ExtResource("2_3rkf3")]
+visible = false
+layout_mode = 1

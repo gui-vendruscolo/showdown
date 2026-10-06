@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://c5jhqmlnwfkex"]
+
+[node name="House" type="Node3D" unique_id=629243621]
+
+[node name="Walls" type="Node3D" parent="." unique_id=2037798654]
+
+[node name="Wall" type="CSGBox3D" parent="Walls" unique_id=1142234925]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, 4)
+use_collision = true
+size = Vector3(10, 5, 0.5)
+
+[node name="Wall2" type="CSGBox3D" parent="Walls" unique_id=164530401]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.5, -4)
+use_collision = true
+size = Vector3(10, 5, 0.5)
+
+[node name="Window2" type="CSGBox3D" parent="Walls/Wall2" unique_id=474383000]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7963812, -0.39940405, 0.12769294)
+operation = 2
+size = Vector3(1.6118164, 1.9561157, 1)
+
+[node name="Window3" type="CSGBox3D" parent="Walls/Wall2" unique_id=1127098724]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.29569554, -0.39940405, 0.12769294)
+operation = 2
+size = Vector3(1.6118164, 1.9561157, 1)
+
+[node name="Window4" type="CSGBox3D" parent="Walls/Wall2" unique_id=144077517]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.1823924, -0.39940405, 0.12769294)
+operation = 2
+size = Vector3(1.6118164, 1.9561157, 1)
+
+[node name="Wall3" type="CSGBox3D" parent="Walls" unique_id=477085897]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.74596, 2.5, 0)
+use_collision = true
+size = Vector3(0.5, 5, 8)
+
+[node name="Door" type="CSGBox3D" parent="Walls/Wall3" unique_id=1524228171]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.1482482, -1.009499, 0.28710938)
+operation = 2
+use_collision = true
+size = Vector3(1.8270874, 3.110825, 1.574)
+
+[node name="Window" type="CSGBox3D" parent="Walls/Wall3" unique_id=435124151]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.62264013, -2.0137522)
+operation = 2
+
+[node name="Window2" type="CSGBox3D" parent="Walls/Wall3" unique_id=2120648845]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.62264013, 2.6587222)
+operation = 2
+
+[node name="Wall4" type="CSGBox3D" parent="Walls" unique_id=1774942247]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.746, 2.5, 0)
+use_collision = true
+size = Vector3(0.5, 5, 8)

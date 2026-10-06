@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://41jx4k84nu15"]
+
+[ext_resource type="PackedScene" uid="uid://ccvnn1eua3fef" path="res://assets/weapons/models/standard_pistol.fbx" id="1_a5oog"]
+
+[node name="StandardPistol" unique_id=2091325446 instance=ExtResource("1_a5oog")]
+transform = Transform3D(0.15, 0, 0, 0, 0.15, 0, 0, 0, 0.15, 0, 0, 0)
+

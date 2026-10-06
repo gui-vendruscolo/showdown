@@ -8,6 +8,10 @@
 [ext_resource type="AnimationLibrary" uid="uid://vcpsnv2bnuru" path="res://assets/animations/crouching_to_standing.fbx" id="3_roipk"]
 [ext_resource type="AnimationLibrary" uid="uid://cw0aph2wn0pwq" path="res://assets/animations/rifle_holding_placeholder.fbx" id="3_sfbr0"]
 [ext_resource type="AnimationLibrary" uid="uid://ckfthb2jgj8vl" path="res://assets/animations/walking_placeholder.fbx" id="4_sfbr0"]
+[ext_resource type="Script" uid="uid://dudqkk1kpbglb" path="res://scripts/torso_rotation_modifier.gd" id="5_torso_modifier"]
+[ext_resource type="PackedScene" uid="uid://diqjsxc7htjp6" path="res://scenes/weapons/standard_rifle.tscn" id="6_rifle"]
+[ext_resource type="PackedScene" uid="uid://41jx4k84nu15" path="res://scenes/standard_pistol.tscn" id="7_pistol"]
+[ext_resource type="AnimationLibrary" uid="uid://d2j5gxnxs3f51" path="res://assets/animations/pistol_holding.fbx" id="8_pistol_holding"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_43i0b"]
 animation = &"rifle_holding_placeholder/mixamo_com"
@@ -255,6 +259,7 @@ libraries/crouching_to_standing = ExtResource("3_roipk")
 libraries/idle_crouching_placeholder = ExtResource("3_43i0b")
 libraries/jumping_placeholder = ExtResource("2_pllpj")
 libraries/rifle_holding_placeholder = ExtResource("3_sfbr0")
+libraries/pistol_holding = ExtResource("8_pistol_holding")
 libraries/running_placeholder = ExtResource("3_l2rvh")
 libraries/walking_placeholder = ExtResource("4_sfbr0")
 
@@ -262,3 +267,18 @@ libraries/walking_placeholder = ExtResource("4_sfbr0")
 tree_root = SubResource("AnimationNodeBlendTree_uvmkg")
 anim_player = NodePath("../AnimationPlayer")
 parameters/Blend2/blend_amount = 0.9
+
+[node name="TorsoRotationModifier" type="SkeletonModifier3D" parent="Skeleton3D"]
+script = ExtResource("5_torso_modifier")
+
+[node name="GunSocket" type="BoneAttachment3D" parent="Skeleton3D"]
+transform = Transform3D(0.07635835, 0.45453298, 0.88745105, 0.99536276, -0.086968854, -0.041099668, 0.058499426, 0.88647413, -0.4590658, 0.05527465, 1.2934265, 0.36385953)
+bone_name = "mixamorig_RightHand"
+bone_idx = 10
+
+[node name="StandardRifle" parent="Skeleton3D/GunSocket" instance=ExtResource("6_rifle")]
+transform = Transform3D(0.007439957, 0.14947066, 0.010154525, 0.14689052, -0.0052786865, -0.029921953, -0.029459082, 0.011428125, -0.1466341, -0.03518009, 0.07087776, 0.08396424)
+
+[node name="StandardPistol" parent="Skeleton3D/GunSocket" instance=ExtResource("7_pistol")]
+transform = Transform3D(0.019414917, 0.14830236, -0.011380881, 0.14591253, -0.021216895, -0.02755725, -0.028855123, -0.0075040106, -0.14700703, -0.011072397, 0.07232025, 0.023792848)
+visible = false

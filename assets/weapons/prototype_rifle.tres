@@ -1,6 +1,10 @@
 [gd_resource type="Resource" script_class="WeaponDefinition" format=3 uid="uid://cocsivby1wrnd"]
 
 [ext_resource type="Script" uid="uid://30b8adyudj6c" path="res://scripts/weapon_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" uid="uid://diqjsxc7htjp6" path="res://scenes/weapons/standard_rifle.tscn" id="2_weapon_scene"]
 
 [resource]
 script = ExtResource("1_definition")
+weapon_scene = ExtResource("2_weapon_scene")
+visual_node_name = &"StandardRifle"
+holding_animation = &"rifle_holding_placeholder/mixamo_com"

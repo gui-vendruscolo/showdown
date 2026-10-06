@@ -2,8 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://dolqa4uebea5k" path="res://scenes/player.tscn" id="1_e05a3"]
 [ext_resource type="PackedScene" uid="uid://dty5fii1y17f3" path="res://scenes/damageable_target.tscn" id="1_wl4x5"]
+[ext_resource type="PackedScene" uid="uid://c5jhqmlnwfkex" path="res://scenes/house.tscn" id="3_4ag8t"]
 [ext_resource type="PackedScene" uid="uid://bx6kakrq6rtdg" path="res://scenes/crosshair.tscn" id="3_olpmc"]
 [ext_resource type="PackedScene" uid="uid://b0j1qd2t5oywg" path="res://scenes/combat_hud.tscn" id="4_xdvfk"]
+[ext_resource type="Script" uid="uid://cmbe0h8u65cer" path="res://scripts/network_session.gd" id="5_network_session"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e05a3"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -19,9 +21,13 @@ tonemap_mode = 2
 glow_enabled = true
 
 [node name="Arena" type="Node3D" unique_id=1653178900]
+script = ExtResource("5_network_session")
+
+[node name="DamageableTarget" parent="." unique_id=1562441630 instance=ExtResource("1_wl4x5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.4390728, 10.121044)
 
 [node name="Sun" type="DirectionalLight3D" parent="." unique_id=1747541337]
-transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+transform = Transform3D(-0.8660254, -0.43301278, 0.24999999, 0.48819903, -0.6243086, 0.6098364, -0.10798979, 0.65018356, 0.7520635, 0, 0, 0)
 shadow_enabled = true
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=115590092]
@@ -30,10 +36,34 @@ environment = SubResource("Environment_olpmc")
 [node name="Ground" type="CSGBox3D" parent="." unique_id=314973223]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 use_collision = true
-size = Vector3(30, 1, 60)
+size = Vector3(50, 1, 100)
 
-[node name="DamageableTarget" parent="Ground" unique_id=1562441630 instance=ExtResource("1_wl4x5")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9390728, 10.121044)
+[node name="House" parent="Ground" unique_id=629243621 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 15.16383, 0, 39.22475)
+
+[node name="House2" parent="Ground" unique_id=1619341690 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(0.6180379, 0, 0.78614837, 0, 1, 0, -0.78614837, 0, 0.6180379, -13.659508, 0, 39.22475)
+
+[node name="House3" parent="Ground" unique_id=2120036159 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(-0.6543582, 0, 0.7561847, 0, 1, 0, -0.7561847, 0, -0.6543582, 15.16383, 0, 26.094006)
+
+[node name="House4" parent="Ground" unique_id=1771123007 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(0.98995465, 0, -0.14138497, 0, 1, 0, 0.14138497, 0, 0.98995465, -14.578026, 0, 18.762203)
+
+[node name="House5" parent="Ground" unique_id=452007273 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 15.16383, 0, -13.045567)
+
+[node name="House6" parent="Ground" unique_id=869065306 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(0.6971901, 0, 0.7168863, 0, 1, 0, -0.7168863, 0, 0.6971901, -13.693893, 0, -9.691959)
+
+[node name="House7" parent="Ground" unique_id=1430605973 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 15.16383, 0, 1.6846161)
+
+[node name="House8" parent="Ground" unique_id=1661963048 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 15.16383, 0, -26.22488)
+
+[node name="House9" parent="Ground" unique_id=1845579222 instance=ExtResource("3_4ag8t")]
+transform = Transform3D(0.6442706, 0, -0.7647976, 0, 1, 0, 0.7647976, 0, 0.6442706, -13.779442, 0, -27.437914)
 
 [node name="Player" parent="." unique_id=1964862749 instance=ExtResource("1_e05a3")]
 
@@ -42,3 +72,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.9390728, 10.121044)
 [node name="CombatHUD" parent="UI" unique_id=842100935 instance=ExtResource("4_xdvfk")]
 
 [node name="Crosshair" parent="UI" unique_id=714669039 instance=ExtResource("3_olpmc")]
+
+[node name="SpawnPoint1" type="Marker3D" parent="." unique_id=1416169124]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.40181, 0, -45.71322)
+
+[node name="SpawnPoint2" type="Marker3D" parent="." unique_id=2041052971]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.27055, 0, 44.908707)

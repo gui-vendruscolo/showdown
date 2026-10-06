@@ -1,0 +1,40 @@
+[gd_scene format=3 uid="uid://dq05fx5xv62ub"]
+
+[node name="JoinMenu" type="VBoxContainer" unique_id=896307142]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="." unique_id=1156779835]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Join"
+horizontal_alignment = 1
+
+[node name="IpAddressInput" type="LineEdit" parent="." unique_id=639338784]
+layout_mode = 2
+placeholder_text = "192.168.1.10"
+alignment = 1
+
+[node name="JoinStatus" type="Label" parent="." unique_id=1076788752]
+layout_mode = 2
+horizontal_alignment = 1
+
+[node name="ConnectButton" type="Button" parent="." unique_id=1387259975]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Join"
+
+[node name="BackButton" type="Button" parent="." unique_id=229269336]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+text = "Go back"

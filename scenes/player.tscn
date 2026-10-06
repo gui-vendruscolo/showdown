@@ -4,10 +4,12 @@
 [ext_resource type="AnimationLibrary" uid="uid://ysw2jlfoiel6" path="res://assets/animations/crouch_walking_placeholder.fbx" id="2_smehm"]
 [ext_resource type="PackedScene" uid="uid://diqjsxc7htjp6" path="res://scenes/weapons/standard_rifle.tscn" id="2_ur7pv"]
 [ext_resource type="AnimationLibrary" uid="uid://vcpsnv2bnuru" path="res://assets/animations/crouching_to_standing.fbx" id="3_ur7pv"]
+[ext_resource type="PackedScene" uid="uid://41jx4k84nu15" path="res://scenes/standard_pistol.tscn" id="4_3v2ag"]
 [ext_resource type="AnimationLibrary" uid="uid://cpnt1gjqq8lll" path="res://assets/animations/idle_crouching_placeholder.fbx" id="4_y4r1p"]
 [ext_resource type="AnimationLibrary" uid="uid://ujqp3v245i0v" path="res://assets/animations/jumping_placeholder.fbx" id="5_d2wvv"]
 [ext_resource type="AnimationLibrary" uid="uid://cw0aph2wn0pwq" path="res://assets/animations/rifle_holding_placeholder.fbx" id="6_3v2ag"]
 [ext_resource type="AnimationLibrary" uid="uid://di5fevmqh4j8t" path="res://assets/animations/running_placeholder.fbx" id="7_jej6c"]
+[ext_resource type="AnimationLibrary" uid="uid://d2j5gxnxs3f51" path="res://assets/animations/pistol_holding.fbx" id="8_d2wvv"]
 [ext_resource type="AnimationLibrary" uid="uid://ckfthb2jgj8vl" path="res://assets/animations/walking_placeholder.fbx" id="8_f1ej7"]
 [ext_resource type="Script" uid="uid://dudqkk1kpbglb" path="res://scripts/torso_rotation_modifier.gd" id="9_torso_modifier"]
 
@@ -1218,12 +1220,15 @@ _data = {
 &"mixamo_com": SubResource("Animation_vmkjk")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_43i0b"]
+animation = &"rifle_holding_placeholder/mixamo_com"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_roipk"]
 animation = &"walking_placeholder/mixamo_com"
 
 [sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_qfqb1"]
 filter_enabled = true
-filters = ["Skeleton3D:mixamorig_Head", "Skeleton3D:mixamorig_LeftArm", "Skeleton3D:mixamorig_LeftForeArm", "Skeleton3D:mixamorig_LeftHand", "Skeleton3D:mixamorig_LeftHandIndex1", "Skeleton3D:mixamorig_LeftHandIndex2", "Skeleton3D:mixamorig_LeftHandIndex3", "Skeleton3D:mixamorig_LeftHandMiddle1", "Skeleton3D:mixamorig_LeftHandMiddle2", "Skeleton3D:mixamorig_LeftHandMiddle3", "Skeleton3D:mixamorig_LeftHandPinky1", "Skeleton3D:mixamorig_LeftHandPinky2", "Skeleton3D:mixamorig_LeftHandPinky3", "Skeleton3D:mixamorig_LeftHandRing1", "Skeleton3D:mixamorig_LeftHandRing2", "Skeleton3D:mixamorig_LeftHandRing3", "Skeleton3D:mixamorig_LeftHandThumb1", "Skeleton3D:mixamorig_LeftHandThumb2", "Skeleton3D:mixamorig_LeftHandThumb3", "Skeleton3D:mixamorig_LeftShoulder", "Skeleton3D:mixamorig_Neck", "Skeleton3D:mixamorig_RightArm", "Skeleton3D:mixamorig_RightForeArm", "Skeleton3D:mixamorig_RightHand", "Skeleton3D:mixamorig_RightHandIndex1", "Skeleton3D:mixamorig_RightHandIndex2", "Skeleton3D:mixamorig_RightHandIndex3", "Skeleton3D:mixamorig_RightHandMiddle1", "Skeleton3D:mixamorig_RightHandMiddle2", "Skeleton3D:mixamorig_RightHandMiddle3", "Skeleton3D:mixamorig_RightHandPinky1", "Skeleton3D:mixamorig_RightHandPinky2", "Skeleton3D:mixamorig_RightHandPinky3", "Skeleton3D:mixamorig_RightHandRing1", "Skeleton3D:mixamorig_RightHandRing2", "Skeleton3D:mixamorig_RightHandRing3", "Skeleton3D:mixamorig_RightHandThumb1", "Skeleton3D:mixamorig_RightHandThumb2", "Skeleton3D:mixamorig_RightHandThumb3", "Skeleton3D:mixamorig_RightShoulder", "Skeleton3D:mixamorig_Spine", "Skeleton3D:mixamorig_Spine1", "Skeleton3D:mixamorig_Spine2"]
+filters = ["Skeleton3D:mixamorig_LeftArm", "Skeleton3D:mixamorig_LeftForeArm", "Skeleton3D:mixamorig_LeftHand", "Skeleton3D:mixamorig_LeftHandIndex1", "Skeleton3D:mixamorig_LeftHandIndex2", "Skeleton3D:mixamorig_LeftHandIndex3", "Skeleton3D:mixamorig_LeftHandMiddle1", "Skeleton3D:mixamorig_LeftHandMiddle2", "Skeleton3D:mixamorig_LeftHandMiddle3", "Skeleton3D:mixamorig_LeftHandPinky1", "Skeleton3D:mixamorig_LeftHandPinky2", "Skeleton3D:mixamorig_LeftHandPinky3", "Skeleton3D:mixamorig_LeftHandRing1", "Skeleton3D:mixamorig_LeftHandRing2", "Skeleton3D:mixamorig_LeftHandRing3", "Skeleton3D:mixamorig_LeftHandThumb1", "Skeleton3D:mixamorig_LeftHandThumb2", "Skeleton3D:mixamorig_LeftHandThumb3", "Skeleton3D:mixamorig_LeftShoulder", "Skeleton3D:mixamorig_Neck", "Skeleton3D:mixamorig_RightArm", "Skeleton3D:mixamorig_RightForeArm", "Skeleton3D:mixamorig_RightHand", "Skeleton3D:mixamorig_RightHandIndex1", "Skeleton3D:mixamorig_RightHandIndex2", "Skeleton3D:mixamorig_RightHandIndex3", "Skeleton3D:mixamorig_RightHandMiddle1", "Skeleton3D:mixamorig_RightHandMiddle2", "Skeleton3D:mixamorig_RightHandMiddle3", "Skeleton3D:mixamorig_RightHandPinky1", "Skeleton3D:mixamorig_RightHandPinky2", "Skeleton3D:mixamorig_RightHandPinky3", "Skeleton3D:mixamorig_RightHandRing1", "Skeleton3D:mixamorig_RightHandRing2", "Skeleton3D:mixamorig_RightHandRing3", "Skeleton3D:mixamorig_RightHandThumb1", "Skeleton3D:mixamorig_RightHandThumb2", "Skeleton3D:mixamorig_RightHandThumb3", "Skeleton3D:mixamorig_RightShoulder", "Skeleton3D:mixamorig_Spine", "Skeleton3D:mixamorig_Spine1", "Skeleton3D:mixamorig_Spine2"]
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_t4s70"]
 animation = &"crouching_to_standing/mixamo_com"
@@ -1323,21 +1328,18 @@ states/walking/position = Vector2(735, 337)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_uvmkg"), "idle", "running", SubResource("AnimationNodeStateMachineTransition_j6bjp"), "idle", "walking", SubResource("AnimationNodeStateMachineTransition_t4s70"), "running", "walking", SubResource("AnimationNodeStateMachineTransition_nccxk"), "walking", "running", SubResource("AnimationNodeStateMachineTransition_h5a1m"), "running", "idle", SubResource("AnimationNodeStateMachineTransition_l2rvh"), "walking", "idle", SubResource("AnimationNodeStateMachineTransition_sfbr0"), "walking", "crouch_enter", SubResource("AnimationNodeStateMachineTransition_tg7nm"), "stand_up", "running", SubResource("AnimationNodeStateMachineTransition_cha6r"), "stand_up", "walking", SubResource("AnimationNodeStateMachineTransition_qyibi"), "stand_up", "idle", SubResource("AnimationNodeStateMachineTransition_cecgt"), "idle", "crouch_enter", SubResource("AnimationNodeStateMachineTransition_0phnx"), "running", "crouch_enter", SubResource("AnimationNodeStateMachineTransition_wbh3w"), "crouch_enter", "crouch_idle", SubResource("AnimationNodeStateMachineTransition_e4l4v"), "crouch_enter", "crouch_walking", SubResource("AnimationNodeStateMachineTransition_k7amj"), "crouch_walking", "crouch_idle", SubResource("AnimationNodeStateMachineTransition_y4ayg"), "crouch_idle", "crouch_walking", SubResource("AnimationNodeStateMachineTransition_0gjps"), "crouch_idle", "stand_up", SubResource("AnimationNodeStateMachineTransition_1xlm0"), "crouch_walking", "stand_up", SubResource("AnimationNodeStateMachineTransition_5q7n0"), "jumping", "walking", SubResource("AnimationNodeStateMachineTransition_aux80"), "walking", "jumping", SubResource("AnimationNodeStateMachineTransition_x40bm"), "jumping", "idle", SubResource("AnimationNodeStateMachineTransition_roipk"), "idle", "jumping", SubResource("AnimationNodeStateMachineTransition_qfqb1"), "jumping", "running", SubResource("AnimationNodeStateMachineTransition_w077x"), "running", "jumping", SubResource("AnimationNodeStateMachineTransition_kkk38")]
 graph_offset = Vector2(186, -28)
 
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_43i0b"]
-animation = &"rifle_holding_placeholder/mixamo_com"
-
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_uvmkg"]
-graph_offset = Vector2(-242.94513, -69.930145)
+graph_offset = Vector2(-20.147266, -1.731543)
 nodes/output/position = Vector2(1240, 140)
 nodes/Blend2/node = SubResource("AnimationNodeBlend2_qfqb1")
 nodes/Blend2/position = Vector2(940, 60)
 nodes/Animation/node = SubResource("AnimationNodeAnimation_roipk")
 nodes/Animation/position = Vector2(140, -40)
+"nodes/Animation 2/node" = SubResource("AnimationNodeAnimation_43i0b")
+"nodes/Animation 2/position" = Vector2(460, 240)
 nodes/Locomotion/node = SubResource("AnimationNodeStateMachine_roipk")
 nodes/Locomotion/position = Vector2(460, 40)
-nodes/RifleHolding/node = SubResource("AnimationNodeAnimation_43i0b")
-nodes/RifleHolding/position = Vector2(460, 240)
-node_connections = [&"output", 0, &"Blend2", &"Blend2", 0, &"Locomotion", &"Blend2", 1, &"RifleHolding"]
+node_connections = [&"output", 0, &"Blend2", &"Blend2", 0, &"Locomotion", &"Blend2", 1, &"Animation 2"]
 
 [node name="Player" type="CharacterBody3D" unique_id=1964862749]
 script = ExtResource("1_controller")
@@ -1346,9 +1348,9 @@ script = ExtResource("1_controller")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
 shape = SubResource("CapsuleShape3D_u8vuu")
 
-[node name="PlaceholderVisuals" type="Node3D" parent="." unique_id=468229709]
+[node name="PlaceholderVisuals" type="Node3D" parent="." unique_id=100504333]
 
-[node name="Skeleton3D" type="Skeleton3D" parent="PlaceholderVisuals" unique_id=857948735]
+[node name="Skeleton3D" type="Skeleton3D" parent="PlaceholderVisuals" unique_id=577578545]
 bones/0/name = "mixamorig_Hips"
 bones/0/parent = -1
 bones/0/rest = Transform3D(1, 0, 0, 0, 0.99991655, -0.012916823, 0, 0.012916823, 0.99991655, -7.727291e-08, 1.0427487, 0.015543158)
@@ -1389,7 +1391,7 @@ bones/5/parent = 4
 bones/5/rest = Transform3D(1, -1.1994119e-23, -1.6543612e-23, 1.1994119e-23, 1, -2.0816682e-17, 1.6543612e-23, 2.0816682e-17, 1, -1.0756748e-09, 0.09341923, 0.028410409)
 bones/5/enabled = true
 bones/5/position = Vector3(-1.0756748e-09, 0.09341923, 0.028410409)
-bones/5/rotation = Quaternion(-0.04520609, 0.16184418, 0.10047169, 0.9806469)
+bones/5/rotation = Quaternion(-0.088198945, -0.01118326, 0.0033395735, 0.9960345)
 bones/5/scale = Vector3(1, 1, 1)
 bones/6/name = "mixamorig_HeadTop_End"
 bones/6/parent = 5
@@ -1805,7 +1807,17 @@ bones/64/position = Vector3(4.1633363e-17, 0.092781365, -2.3356086e-17)
 bones/64/rotation = Quaternion(-2.5345011e-17, -0.011869166, 1.4562052e-19, 0.99992955)
 bones/64/scale = Vector3(1, 1, 1)
 
-[node name="TorsoRotationModifier" type="SkeletonModifier3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=381085172]
+[node name="Beta_Surface" type="MeshInstance3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=404721228]
+mesh = SubResource("ArrayMesh_bgj7v")
+skin = SubResource("Skin_gbkmc")
+skeleton = NodePath("..")
+
+[node name="Beta_Joints" type="MeshInstance3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=2096650278]
+mesh = SubResource("ArrayMesh_wytli")
+skin = SubResource("Skin_wm8dd")
+skeleton = NodePath("..")
+
+[node name="TorsoRotationModifier" type="SkeletonModifier3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=1266121427]
 unique_name_in_owner = false
 process_mode = 0
 process_priority = 0
@@ -1823,31 +1835,27 @@ visibility_parent = NodePath("")
 active = true
 influence = 1.0
 script = ExtResource("9_torso_modifier")
+correction_degrees = -45.0
 
-[node name="Beta_Surface" type="MeshInstance3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=912614126]
-mesh = SubResource("ArrayMesh_bgj7v")
-skin = SubResource("Skin_gbkmc")
-skeleton = NodePath("..")
-
-[node name="Beta_Joints" type="MeshInstance3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=939998176]
-mesh = SubResource("ArrayMesh_wytli")
-skin = SubResource("Skin_wm8dd")
-skeleton = NodePath("..")
-
-[node name="GunSocket" type="BoneAttachment3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=1975605098]
+[node name="GunSocket" type="BoneAttachment3D" parent="PlaceholderVisuals/Skeleton3D" unique_id=44389198]
 transform = Transform3D(0.07635835, 0.45453298, 0.88745105, 0.99536276, -0.086968854, -0.041099668, 0.058499426, 0.88647413, -0.4590658, 0.05527465, 1.2934265, 0.36385953)
 bone_name = "mixamorig_RightHand"
 bone_idx = 10
 
-[node name="StandardRifle" parent="PlaceholderVisuals/Skeleton3D/GunSocket" unique_id=1693179142 instance=ExtResource("2_ur7pv")]
-transform = Transform3D(-0.020169944, 0.14812821, -0.012295692, 0.14796618, 0.021188285, 0.012533906, 0.014114339, -0.0104435785, -0.148969, -0.051861882, 0.038962394, 0.0789222)
+[node name="StandardRifle" parent="PlaceholderVisuals/Skeleton3D/GunSocket" unique_id=741785603 instance=ExtResource("2_ur7pv")]
+transform = Transform3D(0.009945043, 0.1488531, 0.015614031, 0.14593339, -0.013118609, 0.032114923, 0.033235002, 0.013061488, -0.14568748, -0.100780725, 0.092593074, 0.05848343)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="PlaceholderVisuals" unique_id=284075193]
+[node name="StandardPistol" parent="PlaceholderVisuals/Skeleton3D/GunSocket" unique_id=1192498128 instance=ExtResource("4_3v2ag")]
+transform = Transform3D(0.019414917, 0.14830236, -0.011380881, 0.14591253, -0.021216895, -0.02755725, -0.028855123, -0.0075040106, -0.14700703, -0.011072397, 0.07232025, 0.023792848)
+visible = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="PlaceholderVisuals" unique_id=156254257]
 libraries/ = SubResource("AnimationLibrary_s63m5")
 libraries/crouch_walking_placeholder = ExtResource("2_smehm")
 libraries/crouching_to_standing = ExtResource("3_ur7pv")
 libraries/idle_crouching_placeholder = ExtResource("4_y4r1p")
 libraries/jumping_placeholder = ExtResource("5_d2wvv")
+libraries/pistol_holding = ExtResource("8_d2wvv")
 libraries/rifle_holding_placeholder = ExtResource("6_3v2ag")
 libraries/running_placeholder = ExtResource("7_jej6c")
 libraries/walking_placeholder = ExtResource("8_f1ej7")

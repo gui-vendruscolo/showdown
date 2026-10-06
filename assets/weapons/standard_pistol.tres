@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="WeaponDefinition" load_steps=3 format=3]
+
+[ext_resource type="Script" uid="uid://30b8adyudj6c" path="res://scripts/weapon_definition.gd" id="1_definition"]
+[ext_resource type="PackedScene" uid="uid://41jx4k84nu15" path="res://scenes/standard_pistol.tscn" id="2_weapon_scene"]
+
+[resource]
+script = ExtResource("1_definition")
+display_name = "Prototype Pistol"
+fire_mode = 0
+damage = 30.0
+rounds_per_minute = 240.0
+max_range = 60.0
+magazine_capacity = 12
+reload_duration = 1.4
+spread_degrees = 1.0
+weapon_scene = ExtResource("2_weapon_scene")
+visual_node_name = &"StandardPistol"
+holding_animation = &"pistol_holding/mixamo_com"

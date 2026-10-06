@@ -17,6 +17,8 @@ signal respawned
 @export var camera_height: float = 1.45
 @export var camera_distance: float = 3.2
 @export var camera_shoulder_offset: float = 0.65
+@export var shoulder_swap_action: StringName = &"swap_shoulder"
+@export_range(1.0, 20.0, 0.5) var shoulder_swap_smoothing: float = 8.0
 @export var camera_focus_distance: float = 12.0
 @export var aim_action: StringName = &"aim"
 @export_range(35.0, 75.0, 1.0) var aim_camera_fov: float = 66.0
@@ -25,6 +27,10 @@ signal respawned
 @export var min_camera_pitch_degrees: float = -50.0
 @export var max_camera_pitch_degrees: float = 35.0
 @export var starting_weapon: WeaponDefinition = preload("res://assets/weapons/prototype_rifle.tres")
+@export var alternate_weapon: WeaponDefinition = preload("res://assets/weapons/standard_pistol.tres")
+@export var replicated_animation_state: StringName = &"idle"
+@export var replicated_camera_pitch: float = 0.0
+@export_range(0, 1, 1) var replicated_weapon_index: int = 0
 
 @export_category("Health")
 @export_range(1.0, 1000.0, 1.0) var maximum_health: float = 100.0
@@ -41,16 +47,21 @@ signal respawned
 @onready var camera: Camera3D = $CameraPivot/Camera3D
 @onready var player_visuals: Node3D = $PlaceholderVisuals
 @onready var player_collider: CollisionShape3D = $PlayerCollider
+@onready var gun_socket: Node3D = $PlaceholderVisuals.find_child("GunSocket", true, false) as Node3D
 
 var _camera_pitch: float = 0.0
+var _is_local_player: bool = false
+var _camera_shoulder_side: float = 1.0
 var _default_camera_fov: float = 75.0
 var _is_aiming: bool = false
 var _crosshair: Control
 var _animation_player: AnimationPlayer
 var _animation_tree: AnimationTree
+var _holding_animation_node: AnimationNodeAnimation
 var _locomotion_playback: AnimationNodeStateMachinePlayback
 var _current_animation: StringName = &""
 var _weapon_controller: WeaponController
+var _pause_options_menu: OptionsMenuController
 var current_health: float = 100.0
 var is_eliminated: bool = false
 var is_crouching: bool = false
@@ -64,6 +75,7 @@ var _crouch_transition_elapsed: float = 0.0
 var _crouch_transition_duration: float = 0.0
 
 const WEAPON_CONTROLLER_SCRIPT = preload("res://scripts/weapon_controller.gd")
+const PAUSE_OPTIONS_SCENE: PackedScene = preload("res://scenes/menu/options_menu.tscn")
 
 const ANIMATION_LIBRARIES := {
 	"walking_placeholder": "res://assets/animations/walking_placeholder.fbx",
@@ -97,7 +109,9 @@ const ROOT_YAW_PRESERVE_ANIMATIONS := {
 
 
 func _ready() -> void:
-	add_to_group("local_player")
+	_is_local_player = is_multiplayer_authority()
+	if _is_local_player:
+		add_to_group("local_player")
 	_spawn_transform = global_transform
 	current_health = maximum_health
 	health_changed.emit(current_health, maximum_health)
@@ -105,17 +119,35 @@ func _ready() -> void:
 	camera.position = Vector3(camera_shoulder_offset, 0.0, camera_distance)
 	var focus_point := camera_pivot.global_position - camera_pivot.global_basis.z * camera_focus_distance
 	camera.look_at(focus_point, Vector3.UP)
-	camera.current = true
+	camera.current = _is_local_player
 	_default_camera_fov = camera.fov
 	player_visuals.rotation.y = deg_to_rad(visual_yaw_offset_degrees)
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if _is_local_player:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	_setup_animations()
 	_setup_crouch()
 	_setup_weapon()
-	call_deferred("_connect_hud")
+	if not _is_local_player and _weapon_controller != null:
+		_weapon_controller.set_process(false)
+	if _is_local_player:
+		call_deferred("_connect_hud")
 
 
 func _process(delta: float) -> void:
+	if not _is_local_player:
+		camera_pivot.rotation.x = replicated_camera_pitch
+		if replicated_animation_state != _current_animation:
+			_play_animation(replicated_animation_state)
+		if _weapon_controller != null and replicated_weapon_index != _weapon_controller.active_weapon_index:
+			_weapon_controller.set_replicated_weapon_index(replicated_weapon_index)
+		return
+	if InputMap.has_action(shoulder_swap_action) and Input.is_action_just_pressed(shoulder_swap_action):
+		_camera_shoulder_side *= -1.0
+
+	var target_shoulder_offset := camera_shoulder_offset * _camera_shoulder_side
+	var smoothing_weight := 1.0 - exp(-shoulder_swap_smoothing * delta)
+	camera.position.x = lerpf(camera.position.x, target_shoulder_offset, smoothing_weight)
+
 	_is_aiming = InputMap.has_action(aim_action) and Input.is_action_pressed(aim_action)
 	var target_fov := aim_camera_fov if _is_aiming else _default_camera_fov
 	camera.fov = move_toward(camera.fov, target_fov, aim_zoom_speed * delta)
@@ -129,11 +161,13 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if is_eliminated:
+	if not _is_local_player:
 		return
 
 	if event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		_open_pause_options()
+		return
+	if is_eliminated:
 		return
 
 	if event is InputEventMouseButton and event.pressed and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
@@ -141,16 +175,21 @@ func _unhandled_input(event: InputEvent) -> void:
 		return
 
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotate_y(-event.relative.x * mouse_sensitivity)
+		var sensitivity_multiplier := GameSettings.mouse_sensitivity_multiplier
+		rotate_y(-event.relative.x * mouse_sensitivity * sensitivity_multiplier)
 		_camera_pitch = clamp(
-			_camera_pitch - event.relative.y * mouse_sensitivity,
+			_camera_pitch - event.relative.y * mouse_sensitivity * sensitivity_multiplier,
 			deg_to_rad(min_camera_pitch_degrees),
 			deg_to_rad(max_camera_pitch_degrees)
 		)
 		camera_pivot.rotation.x = _camera_pitch
+		replicated_camera_pitch = _camera_pitch
 
 
 func _physics_process(delta: float) -> void:
+	if not _is_local_player:
+		return
+
 	_update_crouch_input()
 	_update_crouch_transition(delta)
 
@@ -197,12 +236,32 @@ func _setup_animations() -> void:
 		if error != OK:
 			push_warning("Could not add animation library '%s'. Error: %s" % [library_name, error])
 
+	_setup_animation_tree()
+
+
+func _find_player_skeleton() -> Skeleton3D:
+	if player_visuals == null:
+		return null
+	var skeletons := player_visuals.find_children("*", "Skeleton3D", true, false)
+	if skeletons.is_empty():
+		return null
+	return skeletons[0] as Skeleton3D
+
+
+func _setup_animation_tree() -> void:
 	_animation_tree = $PlaceholderVisuals.find_child("AnimationTree", true, false) as AnimationTree
 	if _animation_tree == null:
 		push_warning("Player model has no AnimationTree; locomotion animations are disabled.")
 		return
 
 	_animation_tree.active = true
+	var animation_blend_tree := _animation_tree.tree_root as AnimationNodeBlendTree
+	if animation_blend_tree != null:
+		var holding_node_name: StringName = &"RifleHolding"
+		if not animation_blend_tree.get_node_list().has(holding_node_name):
+			holding_node_name = &"Animation 2"
+		if animation_blend_tree.get_node_list().has(holding_node_name):
+			_holding_animation_node = animation_blend_tree.get_node(holding_node_name) as AnimationNodeAnimation
 	_locomotion_playback = _animation_tree.get("parameters/Locomotion/playback") as AnimationNodeStateMachinePlayback
 	if _locomotion_playback == null:
 		push_warning("AnimationTree is missing the Locomotion state machine playback parameter.")
@@ -219,7 +278,6 @@ func _setup_animations() -> void:
 	_set_animation_loop(CROUCH_TRANSITION_ANIMATION, Animation.LOOP_NONE)
 	_set_animation_loop(CROUCH_WALK_ANIMATION, Animation.LOOP_LINEAR)
 	_set_animation_loop(CROUCH_IDLE_ANIMATION, Animation.LOOP_LINEAR)
-
 	_animation_tree.clear_caches()
 	_animation_tree.active = true
 	_play_animation(IDLE_STATE)
@@ -324,11 +382,50 @@ func _can_stand_up() -> bool:
 func _setup_weapon() -> void:
 	if starting_weapon == null:
 		return
+	if gun_socket == null:
+		push_warning("PlaceholderVisuals has no GunSocket; weapon visuals cannot be attached.")
+	else:
+		var skeleton := _find_player_skeleton()
+		if skeleton != null:
+			var right_hand_index := skeleton.find_bone(&"mixamorig_RightHand")
+			if right_hand_index < 0:
+				right_hand_index = skeleton.find_bone(&"RightHand")
+			if right_hand_index >= 0 and gun_socket is BoneAttachment3D:
+				(gun_socket as BoneAttachment3D).bone_idx = right_hand_index
 
 	_weapon_controller = WEAPON_CONTROLLER_SCRIPT.new() as WeaponController
 	_weapon_controller.name = "WeaponController"
-	_weapon_controller.configure(starting_weapon, camera, self)
+	_weapon_controller.configure(starting_weapon, camera, self, alternate_weapon)
+	_weapon_controller.weapon_changed.connect(_on_weapon_changed)
 	add_child(_weapon_controller)
+	_apply_weapon_presentation(starting_weapon)
+
+
+func _on_weapon_changed(weapon_definition: WeaponDefinition) -> void:
+	if _weapon_controller != null:
+		replicated_weapon_index = _weapon_controller.active_weapon_index
+	_apply_weapon_presentation(weapon_definition)
+
+
+func _apply_weapon_presentation(weapon_definition: WeaponDefinition) -> void:
+	if weapon_definition == null:
+		return
+	if gun_socket == null:
+		return
+
+	var selected_visual_found := false
+	for child in gun_socket.get_children():
+		if child is Node3D:
+			var is_selected_visual := child.name == weapon_definition.visual_node_name
+			child.visible = is_selected_visual
+			selected_visual_found = selected_visual_found or is_selected_visual
+
+	if not selected_visual_found:
+		push_warning("No weapon visual named '%s' found under GunSocket." % weapon_definition.visual_node_name)
+
+	if _holding_animation_node != null and not weapon_definition.holding_animation.is_empty():
+		_holding_animation_node.animation = weapon_definition.holding_animation
+		_animation_tree.clear_caches()
 
 
 func take_damage(amount: float, _attacker: Node = null) -> void:
@@ -385,6 +482,8 @@ func _eliminate_and_respawn() -> void:
 
 
 func _connect_hud() -> void:
+	if not _is_local_player:
+		return
 	_crosshair = get_tree().get_first_node_in_group("hud_crosshair") as Control
 	if _crosshair == null:
 		return
@@ -486,9 +585,10 @@ func _neutralize_root_rotation_in_all_animations() -> void:
 func _neutralize_root_yaw(animation: Animation) -> bool:
 	var changed_track := false
 	for track_index in range(animation.get_track_count() - 1, -1, -1):
+		var track_path := String(animation.track_get_path(track_index))
 		var is_root_rotation_track := (
 			animation.track_get_type(track_index) == Animation.TYPE_ROTATION_3D
-			and String(animation.track_get_path(track_index)).ends_with(":mixamorig_Hips")
+			and (track_path.ends_with(":mixamorig_Hips") or track_path.ends_with(":Hips"))
 		)
 		if not is_root_rotation_track:
 			continue
@@ -547,6 +647,61 @@ func _play_animation(animation_name: StringName) -> void:
 		return
 	_locomotion_playback.travel(animation_name)
 	_current_animation = animation_name
+	replicated_animation_state = animation_name
+
+
+func refresh_multiplayer_role() -> void:
+	var should_be_local := is_multiplayer_authority()
+	if should_be_local == _is_local_player:
+		return
+
+	_is_local_player = should_be_local
+	if _is_local_player:
+		add_to_group("local_player")
+		camera.current = true
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if _weapon_controller != null:
+			_weapon_controller.set_process(true)
+		call_deferred("_connect_hud")
+	else:
+		remove_from_group("local_player")
+		camera.current = false
+		if _weapon_controller != null:
+			_weapon_controller.set_process(false)
+
+
+func set_spawn_transform(spawn_transform: Transform3D) -> void:
+	var adjusted_transform := spawn_transform
+	var capsule := player_collider.shape as CapsuleShape3D
+	if capsule != null:
+		# The marker sits on the floor; compensate for the capsule's local vertical offset.
+		adjusted_transform.origin.y += capsule.height * 0.5 - player_collider.position.y
+	global_transform = adjusted_transform
+	_spawn_transform = global_transform
+
+
+func _open_pause_options() -> void:
+	if _pause_options_menu != null:
+		return
+	var ui_layer := get_tree().current_scene.get_node_or_null("UI") as CanvasLayer
+	if ui_layer == null:
+		return
+	_pause_options_menu = PAUSE_OPTIONS_SCENE.instantiate() as OptionsMenuController
+	if _pause_options_menu == null:
+		return
+	_pause_options_menu.process_mode = Node.PROCESS_MODE_WHEN_PAUSED
+	ui_layer.add_child(_pause_options_menu)
+	_pause_options_menu.back_requested.connect(_close_pause_options)
+	get_tree().paused = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+
+func _close_pause_options() -> void:
+	get_tree().paused = false
+	if _pause_options_menu != null:
+		_pause_options_menu.queue_free()
+		_pause_options_menu = null
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 
 func _update_controller_look(delta: float) -> void:
@@ -567,3 +722,4 @@ func _update_controller_look(delta: float) -> void:
 		deg_to_rad(max_camera_pitch_degrees)
 	)
 	camera_pivot.rotation.x = _camera_pitch
+	replicated_camera_pitch = _camera_pitch

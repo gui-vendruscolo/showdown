@@ -20,6 +20,8 @@ enum FireMode {
 
 @export_group("Presentation")
 @export var weapon_scene: PackedScene
+@export var visual_node_name: StringName = &""
+@export var holding_animation: StringName = &""
 @export var impact_effect_scene: PackedScene
 @export var aim_animation: StringName = &""
 @export var fire_animation: StringName = &""
